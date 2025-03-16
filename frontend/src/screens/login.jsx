@@ -50,7 +50,7 @@ const LoginScreen = ({ navigation }) => {
         </View>
 
         <Text style={styles.signupPrompt}>
-          Don't have an account? <Text style={styles.signupLink}>Sign Up</Text>
+          Don't have an account? <Text style={styles.signupLink} onPress={() => navigation.navigate('Signup')}>Sign Up</Text>
         </Text>
       </View>
     </View>
