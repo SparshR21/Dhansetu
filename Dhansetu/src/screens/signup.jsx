@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
+import { 
+  View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert 
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const SignupScreen = ({ navigation }) => {
@@ -13,29 +16,45 @@ const SignupScreen = ({ navigation }) => {
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
   const handleSignup = async () => {
+    console.log("🚀 Sign Up Button Clicked!"); 
+
+    // **Validation Checks**
+    if (!fullName || !email || !mobileNumber || !dob || !password || !confirmPassword) {
+      Alert.alert("Error", "All fields are required!");
+      return;
+    }
+    if (password.length < 6) {
+      Alert.alert("Error", "Password must be at least 6 characters long.");
+      return;
+    }
     if (password !== confirmPassword) {
       Alert.alert("Error", "Passwords do not match!");
       return;
     }
 
     const userData = { fullName, email, mobileNumber, dob, password };
+    console.log("📝 User Data:", userData); 
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/signup", {
+      const response = await fetch("http://10.0.2.2:5000/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
       });
 
+      console.log("📡 Fetch Response:", response); 
       const data = await response.json();
+      console.log("📩 Response Data:", data);
 
       if (response.ok) {
+        await AsyncStorage.setItem('userName', fullName); // Store name for later use
         Alert.alert("Success", "Account created successfully!");
         navigation.navigate("Login");
       } else {
         Alert.alert("Error", data.message || "Something went wrong!");
       }
     } catch (error) {
+      console.error("❌ Fetch Error:", error);
       Alert.alert("Error", "Failed to connect to server.");
     }
   };
@@ -46,20 +65,53 @@ const SignupScreen = ({ navigation }) => {
 
       <View style={styles.formContainer}>
         <Text style={styles.label}>Full Name</Text>
-        <TextInput style={styles.input} placeholder="John Doe" placeholderTextColor="#9DB5A8" value={fullName} onChangeText={setFullName} />
+        <TextInput 
+          style={styles.input} 
+          placeholder="Enter your full name" 
+          placeholderTextColor="#9DB5A8" 
+          value={fullName} 
+          onChangeText={setFullName} 
+        />
 
         <Text style={styles.label}>Email</Text>
-        <TextInput style={styles.input} placeholder="example@example.com" placeholderTextColor="#9DB5A8" keyboardType="email-address" value={email} onChangeText={setEmail} />
+        <TextInput 
+          style={styles.input} 
+          placeholder="Enter your email" 
+          placeholderTextColor="#9DB5A8" 
+          keyboardType="email-address" 
+          value={email} 
+          onChangeText={setEmail} 
+        />
 
         <Text style={styles.label}>Mobile Number</Text>
-        <TextInput style={styles.input} placeholder="+ 123 456 789" placeholderTextColor="#9DB5A8" keyboardType="phone-pad" value={mobileNumber} onChangeText={setMobileNumber} />
+        <TextInput 
+          style={styles.input} 
+          placeholder="Enter your phone number" 
+          placeholderTextColor="#9DB5A8" 
+          keyboardType="phone-pad" 
+          value={mobileNumber} 
+          onChangeText={setMobileNumber} 
+        />
 
         <Text style={styles.label}>Date Of Birth</Text>
-        <TextInput style={styles.input} placeholder="DD / MM / YYYY" placeholderTextColor="#9DB5A8" value={dob} onChangeText={setDob} />
+        <TextInput 
+          style={styles.input} 
+          placeholder="DD/MM/YYYY" 
+          placeholderTextColor="#9DB5A8" 
+          value={dob} 
+          onChangeText={setDob} 
+        />
 
         <Text style={styles.label}>Password</Text>
         <View style={styles.passwordContainer}>
-          <TextInput style={styles.passwordInput} placeholder="••••••••" placeholderTextColor="#9DB5A8" secureTextEntry={!passwordVisible} value={password} onChangeText={setPassword} />
+          <TextInput 
+            style={styles.passwordInput} 
+            placeholder="Enter password" 
+            placeholderTextColor="#9DB5A8" 
+            secureTextEntry={!passwordVisible} 
+            value={password} 
+            onChangeText={setPassword} 
+          />
           <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
             <Icon name={passwordVisible ? "eye-off" : "eye"} size={24} color="gray" />
           </TouchableOpacity>
@@ -67,14 +119,21 @@ const SignupScreen = ({ navigation }) => {
 
         <Text style={styles.label}>Confirm Password</Text>
         <View style={styles.passwordContainer}>
-          <TextInput style={styles.passwordInput} placeholder="••••••••" placeholderTextColor="#9DB5A8" secureTextEntry={!confirmPasswordVisible} value={confirmPassword} onChangeText={setConfirmPassword} />
+          <TextInput 
+            style={styles.passwordInput} 
+            placeholder="Confirm password" 
+            placeholderTextColor="#9DB5A8" 
+            secureTextEntry={!confirmPasswordVisible} 
+            value={confirmPassword} 
+            onChangeText={setConfirmPassword} 
+          />
           <TouchableOpacity onPress={() => setConfirmPasswordVisible(!confirmPasswordVisible)}>
             <Icon name={confirmPasswordVisible ? "eye-off" : "eye"} size={24} color="gray" />
           </TouchableOpacity>
         </View>
 
         <Text style={styles.termsText}>
-          By continuing, you agree to <Text style={styles.boldText}>Terms of Use and Privacy Policy.</Text>
+          By continuing, you agree to our <Text style={styles.boldText}>Terms of Use and Privacy Policy.</Text>
         </Text>
 
         <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
@@ -106,3 +165,4 @@ const styles = StyleSheet.create({
 });
 
 export default SignupScreen;
+

@@ -17,7 +17,7 @@ const LoginScreen = ({ navigation }) => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch('http://10.0.2.2:5000/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ const LoginScreen = ({ navigation }) => {
         Alert.alert('Success', 'Login successful');
         // Save the token (for future requests)
         // AsyncStorage.setItem('token', data.token);
-        navigation.navigate('Home'); // Navigate to the home screen
+        navigation.navigate("Home2"); // Navigate to the home screen
       } else {
         Alert.alert('Error', data.message || 'Invalid login credentials');
       }

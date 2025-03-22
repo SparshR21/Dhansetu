@@ -6,7 +6,7 @@ const Splash = ({ navigation }) => {
   useEffect(() => {
     setTimeout(() => {
       SplashScreen.hide();  // Hide splash screen after 2 seconds
-      navigation.replace('Home');  // Navigate to Home screen
+      navigation.navigate('Home');  // Navigate to Home screen
     }, 2000);
   }, []);
 
