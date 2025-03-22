@@ -40,6 +40,7 @@ import LoginScreen from "../screens/login";
 import HomeScreen from "../screens/homescreen";
 import HomeScreen2 from "../screens/homescreen2";
 import Schemes from "../screens/schemes";
+import Inv from "../screens/invgen"
 
 // Create Navigators
 const Stack = createStackNavigator();
@@ -95,6 +96,7 @@ const AppNavigator = () => {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Home2" component={HomeScreen2} />
         <Stack.Screen name="Schemes" component={Schemes} />
+        <Stack.Screen name="Inv" component={Inv} />
       </Stack.Navigator>
     </NavigationContainer>
   );

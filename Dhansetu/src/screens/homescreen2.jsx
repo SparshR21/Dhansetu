@@ -125,7 +125,7 @@ const HomeScreen2 = ({ navigation, route }) => {
         <TouchableOpacity onPress={() => navigation.navigate("Schemes")}>
           <Icon name="database" size={30} color="#000" />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Inv")}>
           <Icon name="bank" size={30} color="#000" />
         </TouchableOpacity>
       </View>
