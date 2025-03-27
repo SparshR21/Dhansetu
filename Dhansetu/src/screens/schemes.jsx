@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator, StyleSheet, Linking } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-const InvestmentOptions = () => {
+const InvestmentOptions = ({navigation}) => {
   const [schemes, setSchemes] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("Post Office Schemes");
   const [loading, setLoading] = useState(false);
@@ -80,14 +80,14 @@ const InvestmentOptions = () => {
         )}
       </ScrollView>
 
-      <View style={styles.bottomNav}>
-      <TouchableOpacity>
-    <Icon name="home" size={30} color="#000" />
-  </TouchableOpacity>
+           <View style={styles.bottomNav}>
+              <TouchableOpacity onPress={() => navigation.navigate("Home2")}>
+                <Icon name="home" size={30} color="#000" />
+              </TouchableOpacity>
               <TouchableOpacity>
                 <Icon name="database" size={30} color="#00C2A8" />
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate("Inv")}>
                 <Icon name="bank" size={30} color="#000" />
               </TouchableOpacity>
             </View>

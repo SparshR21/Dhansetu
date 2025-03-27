@@ -17,8 +17,7 @@ const SignupScreen = ({ navigation }) => {
 
   const handleSignup = async () => {
     console.log("🚀 Sign Up Button Clicked!"); 
-
-    // **Validation Checks**
+  
     if (!fullName || !email || !mobileNumber || !dob || !password || !confirmPassword) {
       Alert.alert("Error", "All fields are required!");
       return;
@@ -31,25 +30,22 @@ const SignupScreen = ({ navigation }) => {
       Alert.alert("Error", "Passwords do not match!");
       return;
     }
-
+  
     const userData = { fullName, email, mobileNumber, dob, password };
-    console.log("📝 User Data:", userData); 
-
+  
     try {
       const response = await fetch("http://10.0.2.2:5000/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
       });
-
-      console.log("📡 Fetch Response:", response); 
+  
       const data = await response.json();
       console.log("📩 Response Data:", data);
-
+  
       if (response.ok) {
-        await AsyncStorage.setItem('userName', fullName); // Store name for later use
-        Alert.alert("Success", "Account created successfully!");
-        navigation.navigate("Login");
+        // Navigate to OTP screen
+        navigation.navigate("Otp", { email, mobileNumber });
       } else {
         Alert.alert("Error", data.message || "Something went wrong!");
       }
@@ -58,7 +54,7 @@ const SignupScreen = ({ navigation }) => {
       Alert.alert("Error", "Failed to connect to server.");
     }
   };
-
+  
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Create Account</Text>
